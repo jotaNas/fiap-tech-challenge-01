@@ -27,7 +27,7 @@ Suba um PostgreSQL local (DB: userdb, user: postgres, pass: postgres) ou ajuste 
 Execute o projeto:
 
 ```bash
-./mvnw spring-boot:run
+./gradlew bootRun
 ```
 ## Endpoints principais
 POST /api/v1/users
