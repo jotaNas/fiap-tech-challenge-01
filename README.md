@@ -57,9 +57,7 @@ Campos validados com jakarta.validation.
 ### Postman Collection
 O repositório inclui uma coleção Postman exportada:
 
-```bash
-postman-collection.json
-```
+[Postman Collection](postman-collection.json)
 
 Ela cobre:
 
