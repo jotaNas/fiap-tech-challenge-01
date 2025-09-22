@@ -1,0 +1,157 @@
+{
+  "info": {
+    "name": "User API v1",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "c4ef5c2a-0000-0000-0000-1234567890ab"
+  },
+  "item": [
+    {
+      "name": "Create user (valid)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/users",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "v1", "users"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"João Tavares\",\n  \"email\": \"joao@example.com\",\n  \"login\": \"joaot\",\n  \"password\": \"secret123\",\n  \"type\": \"RESTAURANT_OWNER\",\n  \"address\": {\"street\": \"Rua A\", \"number\": \"100\", \"city\": \"Barbacena\", \"zipCode\": \"36200-000\"}\n}"
+        }
+      }
+    },
+    {
+      "name": "Create user (duplicate email)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/users",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "v1", "users"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Outro\",\n  \"email\": \"joao@example.com\",\n  \"login\": \"outro\",\n  \"password\": \"secret123\",\n  \"type\": \"CLIENT\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Get by id",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/api/v1/users/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "v1", "users", "1"]
+        }
+      }
+    },
+    {
+      "name": "Search by name",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/api/v1/users?name=jo",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "v1", "users"],
+          "query": [{ "key": "name", "value": "jo" }]
+        }
+      }
+    },
+    {
+      "name": "Update (no password)",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/users/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "v1", "users", "1"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"João T.\",\n  \"email\": \"joao@example.com\",\n  \"login\": \"joaoT\",\n  \"type\": \"RESTAURANT_OWNER\",\n  \"address\": {\"street\": \"Rua B\", \"number\": \"200\", \"city\": \"Barbacena\", \"zipCode\": \"36200-000\"}\n}"
+        }
+      }
+    },
+    {
+      "name": "Change password (success)",
+      "request": {
+        "method": "PATCH",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/users/1/password",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "v1", "users", "1", "password"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"currentPassword\": \"secret123\",\n  \"newPassword\": \"newsecret456\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Change password (wrong current)",
+      "request": {
+        "method": "PATCH",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/users/1/password",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "v1", "users", "1", "password"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"currentPassword\": \"wrong\",\n  \"newPassword\": \"another123\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Delete",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "http://localhost:8080/api/v1/users/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "v1", "users", "1"]
+        }
+      }
+    },
+    {
+      "name": "Login validation",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/auth/login",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "v1", "auth", "login"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"login\": \"joaoT\",\n  \"password\": \"newsecret456\"\n}"
+        }
+      }
+    }
+  ]
+}
