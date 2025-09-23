@@ -3,6 +3,8 @@ package com.fiap.postech.techchallenger.service;
 import com.fiap.postech.techchallenger.domain.User;
 import com.fiap.postech.techchallenger.dto.*;
 import com.fiap.postech.techchallenger.exception.EmailAlreadyUsedException;
+import com.fiap.postech.techchallenger.exception.InvalidCredentialsException;
+import com.fiap.postech.techchallenger.exception.UserNotFoundException;
 import com.fiap.postech.techchallenger.repository.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -86,7 +88,7 @@ public class UserService {
 
     private User findOrThrow(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado com o id: " + id));
+                .orElseThrow(() -> new UserNotFoundException(id));
     }
 
     private UserResponseDTO toDTO(User user) {
@@ -105,7 +107,7 @@ public class UserService {
         User user = findOrThrow(id);
 
         if (dto.currentPassword() == null || !BCrypt.checkpw(dto.currentPassword(), user.getPasswordHash())) {
-            throw new IllegalArgumentException("Senha atual inválida.");
+            throw new InvalidCredentialsException("Senha atual inválida.");
         }
         if (dto.newPassword() == null || dto.newPassword().isBlank()) {
             throw new IllegalArgumentException("Nova senha não pode ser vazia.");
@@ -130,7 +132,7 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("Login ou senha inválidos."));
 
         if (!BCrypt.checkpw(dto.password(), user.getPasswordHash())) {
-            throw new IllegalArgumentException("Login ou senha inválidos.");
+            throw new InvalidCredentialsException("Login ou senha inválidos.");
         }
 
         return toDTO(user);
