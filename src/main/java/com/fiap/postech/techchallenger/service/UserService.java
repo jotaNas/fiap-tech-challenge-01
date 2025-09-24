@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -59,31 +60,19 @@ public class UserService {
     public UserResponseDTO update(Long id, UserUpdateDTO dto) {
         User user = findOrThrow(id);
 
-        if (dto.email() != null && !dto.email().equals(user.getEmail())) {
-            if (userRepository.existsByEmail(dto.email())) {
-                throw new EmailAlreadyUsedException(dto.email());
+        Optional.ofNullable(dto.email()).ifPresent(email -> {
+            if (!email.equals(user.getEmail()) && userRepository.existsByEmail(email)) {
+                throw new EmailAlreadyUsedException(email);
             }
-            user.setEmail(dto.email());
-        }
+            user.setEmail(email);
+        });
 
-        if (dto.name() != null) {
-            user.setName(dto.name());
-        }
+        Optional.ofNullable(dto.name()).ifPresent(user::setName);
+        Optional.ofNullable(dto.login()).ifPresent(user::setLogin);
+        Optional.ofNullable(dto.type()).ifPresent(user::setType);
+        Optional.ofNullable(dto.address()).ifPresent(user::setAddress);
 
-        if (dto.login() != null) {
-            user.setLogin(dto.login());
-        }
-
-        if (dto.type() != null) {
-            user.setType(dto.type());
-        }
-
-        if (dto.address() != null) {
-            user.setAddress(dto.address());
-        }
-
-        user = userRepository.save(user);
-        return toDTO(user);
+        return toDTO(userRepository.save(user));
     }
 
     private User findOrThrow(Long id) {
